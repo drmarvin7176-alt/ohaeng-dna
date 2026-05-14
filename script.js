@@ -853,10 +853,15 @@ function genBoostText(counts) {
     const cKey = ENV_COUNTER[envKey];
     const b    = OH_BOOST[cKey];
     const eCol = OH_COLOR[envKey];
-    return `<span class="boost-row">
-      <span class="boost-chip" style="background:${eCol}">${OH_BOOST[envKey].sym}</span>
-      <span><strong>${OH_BOOST[envKey].envDesc}</strong><br><em>${b.col}</em>, ${b.items.split(',').slice(0,2).join(', ')} 등으로 보완</span>
-    </span>`;
+    const remedy = `${b.col}, ${b.items.split(',').slice(0,2).join(', ')} 등으로 보완`;
+    return `<div class="boost-env-item">
+      <div class="boost-env-header">
+        <span class="boost-chip" style="background:${eCol}">${OH_BOOST[envKey].sym}</span>
+        <span class="boost-env-when">${OH_NAME[envKey]}이 많은 곳일때</span>
+      </div>
+      <div class="boost-env-desc">${OH_BOOST[envKey].envDesc}</div>
+      <div class="boost-env-remedy">${remedy}</div>
+    </div>`;
   }).join('');
 
   return html;
