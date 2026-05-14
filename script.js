@@ -976,11 +976,56 @@ function renderEssence(arch, counts) {
 // ══════════════════════════════════════════════════════════
 document.getElementById('resetBtn').addEventListener('click', () => {
   document.getElementById('resultScreen').classList.add('hidden');
+  history.replaceState(null, '', location.pathname);
   startSteps();
 });
+
+// ══════════════════════════════════════════════════════════
+//  공유
+// ══════════════════════════════════════════════════════════
+document.getElementById('shareBtn').addEventListener('click', () => {
+  const p = answers;
+  const params = new URLSearchParams({
+    n: p.name,
+    y: p.year,
+    m: p.month,
+    d: p.day,
+    g: p.gender,
+    ...(p.hourBranchIdx !== null ? { h: p.hourBranchIdx } : {}),
+  });
+  const url = `${location.origin}${location.pathname}?${params}`;
+
+  if (navigator.share) {
+    navigator.share({ title: '나의 속성', text: `${p.name}의 오행 속성을 확인해보세요`, url });
+  } else {
+    navigator.clipboard.writeText(url).then(() => {
+      const toast = document.getElementById('shareToast');
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 2000);
+    });
+  }
+});
+
+// ══════════════════════════════════════════════════════════
+//  URL 파라미터로 자동 실행
+// ══════════════════════════════════════════════════════════
+function tryAutoRun() {
+  const p = new URLSearchParams(location.search);
+  if (!p.get('n') || !p.get('y')) return false;
+  answers.name          = p.get('n');
+  answers.year          = +p.get('y');
+  answers.month         = +p.get('m');
+  answers.day           = +p.get('d');
+  answers.gender        = p.get('g');
+  answers.hourBranchIdx = p.has('h') ? +p.get('h') : null;
+  document.getElementById('intro').classList.add('hidden');
+  document.getElementById('loadingScreen').classList.remove('hidden');
+  startAnalysis();
+  return true;
+}
 
 // ══════════════════════════════════════════════════════════
 //  초기화
 // ══════════════════════════════════════════════════════════
 initCanvas();
-initIntro();
+if (!tryAutoRun()) initIntro();

@@ -691,12 +691,30 @@ body {
 .oh-detail-desc { font-size: .87rem; line-height: 1.85; color: #50506a; }
 
 /* 다시 찾기 */
+.action-btns {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 8px;
+}
 .reset-btn {
-  display: block; margin: 8px auto 0; padding: 11px 32px;
+  padding: 11px 28px;
   background: transparent; border: 1px solid var(--border); border-radius: 10px;
   color: var(--muted); cursor: pointer; font-size: .86rem; letter-spacing: .05em;
   transition: border-color .2s, color .2s;
 }
 .reset-btn:hover { border-color: #7070cc; color: #7070cc; }
+.share-btn {
+  padding: 11px 28px;
+  background: transparent; border: 1px solid var(--border); border-radius: 10px;
+  color: var(--text); cursor: pointer; font-size: .86rem; letter-spacing: .05em;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.share-btn:hover { background: var(--text); color: #fff; border-color: var(--text); }
+.share-toast {
+  text-align: center; margin-top: 10px;
+  font-size: .8rem; color: #7070cc;
+  animation: fadeIn .2s ease;
+}
 
 .hidden { display: none !important; }
