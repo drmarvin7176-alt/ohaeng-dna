@@ -457,29 +457,34 @@ body {
 /* ── 히어로 뷰 ── */
 .oh-hero {
   text-align: center;
-  padding: 72px 0 56px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0;
 }
 
 .oh-hero-meta {
   font-size: .74rem;
   color: var(--muted);
   letter-spacing: .14em;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
 }
 
 .oh-hero-sym {
-  font-size: 7rem;
+  font-size: 11rem;
   font-weight: 700;
   line-height: 1;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
 }
 
 .oh-hero-title {
-  font-size: 1.35rem;
+  font-size: 1.6rem;
   font-weight: 500;
   color: var(--text);
   letter-spacing: .02em;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
   line-height: 1.5;
 }
 .oh-hero-title strong {
