@@ -7,110 +7,80 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="bg-glow"></div>
 
-  <!-- 메인 입력 화면 -->
-  <div class="main-screen" id="mainScreen">
-    <form class="float-form" id="sajuForm">
-      <div class="float-row">
-        <div class="float-field">
-          <label>이름</label>
-          <input type="text" id="name" placeholder="홍길동" required />
-        </div>
-        <div class="float-field">
-          <label>성별</label>
-          <div class="radios">
-            <label><input type="radio" name="gender" value="남성" required /> 남성</label>
-            <label><input type="radio" name="gender" value="여성" /> 여성</label>
-          </div>
-        </div>
-      </div>
+  <!-- 우주 배경 캔버스 -->
+  <canvas id="cosmos"></canvas>
 
-      <div class="float-row">
-        <div class="float-field">
-          <label>생년월일</label>
-          <input type="date" id="birthDate" required />
-        </div>
-        <div class="float-field">
-          <label>태어난 시간</label>
-          <select id="birthTime">
-            <option value="">모름 (시주 제외)</option>
-            <option value="0">자시 (23:00~01:00)</option>
-            <option value="1">축시 (01:00~03:00)</option>
-            <option value="2">인시 (03:00~05:00)</option>
-            <option value="3">묘시 (05:00~07:00)</option>
-            <option value="4">진시 (07:00~09:00)</option>
-            <option value="5">사시 (09:00~11:00)</option>
-            <option value="6">오시 (11:00~13:00)</option>
-            <option value="7">미시 (13:00~15:00)</option>
-            <option value="8">신시 (15:00~17:00)</option>
-            <option value="9">유시 (17:00~19:00)</option>
-            <option value="10">술시 (19:00~21:00)</option>
-            <option value="11">해시 (21:00~23:00)</option>
-          </select>
-        </div>
-      </div>
-
-      <button type="submit" class="submit-btn">✦ 나의 DNA 찾기</button>
-    </form>
+  <!-- 인트로: 흰 점 -->
+  <div class="intro" id="intro">
+    <button class="origin-dot" id="originDot" aria-label="시작"></button>
   </div>
 
-  <!-- 로딩 화면 -->
-  <div class="loading-screen hidden" id="loadingScreen">
-    <div class="loading-inner">
-      <div class="loading-symbol">☯</div>
-      <p class="loading-text">당신의 본질을 분석하고 있습니다</p>
-      <div class="loading-dots">
-        <span></span><span></span><span></span>
-      </div>
+  <!-- 단계별 입력 -->
+  <div class="step-screen hidden" id="stepScreen">
+    <div class="step-box">
+      <p class="step-q" id="stepQ"></p>
+      <div class="step-input-area" id="stepInputArea"></div>
+      <button class="step-next hidden" id="stepNext">다음 →</button>
     </div>
+    <div class="step-dots" id="stepDots"></div>
   </div>
 
-  <!-- 결과 화면 -->
+  <!-- 로딩 -->
+  <div class="loading-screen hidden" id="loadingScreen">
+    <div class="loading-orbs" id="loadingOrbs">
+      <div class="l-orb" style="--c:#5aad5a;--a:0deg"></div>
+      <div class="l-orb" style="--c:#e06060;--a:72deg"></div>
+      <div class="l-orb" style="--c:#c09a30;--a:144deg"></div>
+      <div class="l-orb" style="--c:#9ab0d0;--a:216deg"></div>
+      <div class="l-orb" style="--c:#5090d0;--a:288deg"></div>
+    </div>
+    <p class="loading-text">본질을 분석하고 있습니다</p>
+  </div>
+
+  <!-- 결과 -->
   <div class="result-screen hidden" id="resultScreen">
     <div class="result-inner">
 
-      <!-- 사주 팔자 -->
-      <div class="card pillar-card">
-        <div class="section-label">사주 팔자 <span class="lib-badge" id="libraryBadge"></span></div>
-        <div class="pillar-table" id="pillarTable"></div>
+      <!-- 심플 뷰 -->
+      <div class="oh-hero" id="ohHero">
+        <div class="oh-hero-meta" id="ohHeroMeta"></div>
+        <div class="oh-hero-sym" id="ohHeroSym"></div>
+        <div class="oh-hero-title" id="ohHeroTitle"></div>
+        <div class="oh-hero-palette" id="ohHeroPalette"></div>
+        <div class="oh-hero-tagline" id="ohHeroTagline"></div>
+        <div class="oh-hero-keys" id="ohHeroKeys"></div>
+        <button class="more-btn" id="moreBtn">설명 더보기</button>
       </div>
 
-      <!-- 오행 DNA 카드 -->
-      <div class="dna-card" id="dnaCard">
-        <div class="dna-top">
-          <div>
-            <span class="dna-label">오행 DNA</span>
-            <span class="dna-person" id="dnaPersonName"></span>
-          </div>
-          <div class="dna-date" id="dnaDate"></div>
+      <!-- 상세 뷰 (숨김) -->
+      <div class="detail-section hidden" id="detailSection">
+        <div class="card pillar-card">
+          <div class="section-label">사주 팔자 <span class="lib-badge" id="libraryBadge"></span></div>
+          <div class="pillar-table" id="pillarTable"></div>
         </div>
-
-        <div class="oh-palette" id="ohPalette"></div>
-
-        <div class="dna-core" id="dnaCore"></div>
-
-        <div class="dna-type-wrap">
-          <div class="dna-type-ko" id="dnaTypeKo"></div>
-          <div class="dna-type-en" id="dnaTypeEn"></div>
+        <div class="card essence-card">
+          <div class="section-label">본질 설명</div>
+          <div class="essence-text" id="essenceText"></div>
+          <div class="oh-mini-bars" id="ohMiniBars"></div>
         </div>
-
-        <div class="dna-attrs" id="dnaAttrs"></div>
-        <div class="dna-tagline" id="dnaTagline"></div>
-      </div>
-
-      <!-- 본질 설명 -->
-      <div class="card essence-card">
-        <div class="section-label">본질 설명</div>
-        <div class="essence-text" id="essenceText"></div>
-        <div class="oh-mini-bars" id="ohMiniBars"></div>
+        <div class="card">
+          <div class="section-label">오행 상생 · 상극</div>
+          <div id="ohCycleCard"></div>
+        </div>
+        <div class="card">
+          <div class="section-label">오행 분석</div>
+          <div id="ohDetailList"></div>
+        </div>
+        <div class="card">
+          <div class="section-label">풍수 · 나에게 맞는 공간</div>
+          <div id="pungsuContent"></div>
+        </div>
       </div>
 
       <button class="reset-btn" id="resetBtn">← 다시 찾기</button>
     </div>
   </div>
-
-  <footer>오행 DNA · 만세력 절기 기반 · 오락 목적으로 제공됩니다</footer>
 
   <script src="https://cdn.jsdelivr.net/npm/lunar-javascript/lunar.js"></script>
   <script src="script.js"></script>
