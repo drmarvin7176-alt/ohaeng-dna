@@ -257,13 +257,35 @@ body {
   -webkit-appearance: none;
   appearance: none;
 }
-.step-input-area select:focus {
-  border-bottom-color: #7070cc;
+.step-input-area select:focus { border-bottom-color: #7070cc; }
+.step-input-area select option { background: white; color: var(--text); }
+
+/* 년/월/일 세 칸 */
+.date-selects {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  width: 100%;
 }
-.step-input-area select option {
-  background: white;
+.date-sel {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--border);
+  font-size: 1.1rem;
   color: var(--text);
+  text-align: center;
+  padding: 10px 2px;
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color .25s;
+  -webkit-appearance: none;
+  appearance: none;
 }
+.date-sel:focus { border-bottom-color: #7070cc; }
+.date-sel option { background: white; color: #333; }
 
 /* 다음 버튼 — 원형 화살표 */
 .step-next {

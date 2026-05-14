@@ -382,22 +382,51 @@ const STEPS = [
   {
     q: '생년월일을 알려주세요.',
     render() {
-      const inp = document.createElement('input');
-      inp.type = 'date';
-      inp.max = new Date().toISOString().split('T')[0];
-      elStepArea.appendChild(inp);
-      setTimeout(() => inp.focus(), 60);
-      inp.addEventListener('change', () => {
-        inp.value ? showNext() : hideNext();
-      });
-      inp.addEventListener('keydown', e => {
-        if (e.key === 'Enter' && inp.value) elStepNext.click();
-      });
+      const wrap = document.createElement('div');
+      wrap.className = 'date-selects';
+
+      const curYear = new Date().getFullYear();
+
+      const selY = document.createElement('select');
+      selY.className = 'date-sel';
+      selY.innerHTML = `<option value="">년도</option>` +
+        Array.from({length: curYear - 1929}, (_, i) => curYear - i)
+          .map(y => `<option value="${y}">${y}</option>`).join('');
+
+      const selM = document.createElement('select');
+      selM.className = 'date-sel';
+      selM.innerHTML = `<option value="">월</option>` +
+        Array.from({length:12},(_,i)=>`<option value="${i+1}">${i+1}월</option>`).join('');
+
+      const selD = document.createElement('select');
+      selD.className = 'date-sel';
+      selD.innerHTML = `<option value="">일</option>` +
+        Array.from({length:31},(_,i)=>`<option value="${i+1}">${i+1}일</option>`).join('');
+
+      function updateDays() {
+        const y = +selY.value, m = +selM.value;
+        const max = y && m ? new Date(y, m, 0).getDate() : 31;
+        const cur = +selD.value;
+        selD.innerHTML = `<option value="">일</option>` +
+          Array.from({length:max},(_,i)=>`<option value="${i+1}"${cur===i+1?' selected':''}>${i+1}일</option>`).join('');
+      }
+
+      function check() {
+        selY.value && selM.value && selD.value ? showNext() : hideNext();
+      }
+
+      selY.addEventListener('change', () => { updateDays(); check(); });
+      selM.addEventListener('change', () => { updateDays(); check(); });
+      selD.addEventListener('change', check);
+
+      wrap.append(selY, selM, selD);
+      elStepArea.appendChild(wrap);
     },
     validate() {
-      const v = elStepArea.querySelector('input').value;
-      if (!v) return false;
-      [answers.year, answers.month, answers.day] = v.split('-').map(Number);
+      const sels = elStepArea.querySelectorAll('select');
+      const y = +sels[0].value, m = +sels[1].value, d = +sels[2].value;
+      if (!y || !m || !d) return false;
+      answers.year = y; answers.month = m; answers.day = d;
       return true;
     },
   },
