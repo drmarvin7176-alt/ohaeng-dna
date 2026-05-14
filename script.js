@@ -316,7 +316,7 @@ function initIntro() {
 
   dot.addEventListener('click', () => {
     document.getElementById('intro').classList.add('hidden');
-    startSteps();
+    showForm();
   });
 }
 
@@ -478,6 +478,108 @@ function startSteps() {
 
   document.getElementById('stepScreen').classList.remove('hidden');
   renderStep(0);
+}
+
+function showForm() {
+  const screen = document.getElementById('stepScreen');
+  screen.classList.remove('hidden');
+  answers.gender = '';
+
+  const curYear = new Date().getFullYear();
+
+  screen.innerHTML = `
+    <div class="form-box">
+      <p class="form-title">나의 속성 찾기</p>
+      <div class="form-field">
+        <label class="form-label">이름</label>
+        <input id="f-name" type="text" class="form-input" placeholder="이름을 입력하세요" autocomplete="off" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">생년월일</label>
+        <div class="date-selects" style="justify-content:flex-start">
+          <select id="f-year" class="date-sel">
+            <option value="">년도</option>
+            ${Array.from({length: curYear - 1929}, (_, i) => curYear - i).map(y => `<option value="${y}">${y}</option>`).join('')}
+          </select>
+          <select id="f-month" class="date-sel">
+            <option value="">월</option>
+            ${Array.from({length:12},(_,i)=>`<option value="${i+1}">${i+1}월</option>`).join('')}
+          </select>
+          <select id="f-day" class="date-sel">
+            <option value="">일</option>
+            ${Array.from({length:31},(_,i)=>`<option value="${i+1}">${i+1}일</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label">성별</label>
+        <div class="gender-btns" style="justify-content:flex-start;gap:12px">
+          <button class="gender-btn form-gender-btn" data-gender="남성">남성</button>
+          <button class="gender-btn form-gender-btn" data-gender="여성">여성</button>
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label">태어난 시간 <span class="form-optional">선택</span></label>
+        <select id="f-hour" class="date-sel" style="max-width:100%;width:100%">
+          ${HOUR_OPTIONS.map(({label, value}) => `<option value="${value === null ? '' : value}">${label}</option>`).join('')}
+        </select>
+      </div>
+      <button id="f-submit" class="form-submit">분석하기 →</button>
+    </div>
+  `;
+
+  const selY = document.getElementById('f-year');
+  const selM = document.getElementById('f-month');
+  const selD = document.getElementById('f-day');
+
+  function updateDays() {
+    const y = +selY.value, m = +selM.value;
+    const max = y && m ? new Date(y, m, 0).getDate() : 31;
+    const cur = +selD.value;
+    selD.innerHTML = `<option value="">일</option>` +
+      Array.from({length:max},(_,i)=>`<option value="${i+1}"${cur===i+1?' selected':''}>${i+1}일</option>`).join('');
+  }
+  selY.addEventListener('change', updateDays);
+  selM.addEventListener('change', updateDays);
+
+  screen.querySelectorAll('.form-gender-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      screen.querySelectorAll('.form-gender-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      answers.gender = btn.dataset.gender;
+    });
+  });
+
+  document.getElementById('f-name').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('f-submit').click();
+  });
+
+  document.getElementById('f-submit').addEventListener('click', () => {
+    const name    = document.getElementById('f-name').value.trim();
+    const year    = +selY.value;
+    const month   = +selM.value;
+    const day     = +selD.value;
+    const gender  = answers.gender;
+    const hourVal = document.getElementById('f-hour').value;
+
+    document.getElementById('f-name').classList.toggle('form-error', !name);
+    selY.classList.toggle('form-error', !year);
+    selM.classList.toggle('form-error', !month);
+    selD.classList.toggle('form-error', !day);
+    screen.querySelectorAll('.form-gender-btn').forEach(b =>
+      b.classList.toggle('form-gender-error', !gender)
+    );
+
+    if (!name || !year || !month || !day || !gender) return;
+
+    answers.name          = name;
+    answers.year          = year;
+    answers.month         = month;
+    answers.day           = day;
+    answers.hourBranchIdx = hourVal === '' ? null : parseInt(hourVal, 10);
+
+    startAnalysis();
+  });
 }
 
 function renderStep(i) {
@@ -1018,7 +1120,7 @@ function renderEssence(arch, counts) {
 document.getElementById('resetBtn').addEventListener('click', () => {
   document.getElementById('resultScreen').classList.add('hidden');
   history.replaceState(null, '', location.pathname);
-  startSteps();
+  showForm();
 });
 
 // ══════════════════════════════════════════════════════════
