@@ -629,6 +629,31 @@ body {
   font-weight: 500;
   line-height: 1.6;
 }
+.boost-env-need {
+  font-size: .76rem;
+  color: #7a5a20;
+  margin-left: 28px;
+  margin-bottom: 4px;
+  background: rgba(180,140,40,0.08);
+  border-radius: 5px;
+  padding: 3px 7px;
+}
+.boost-env-remedy-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: .83rem;
+  color: #44446a;
+  margin-left: 28px;
+  line-height: 1.6;
+}
+.boost-env-remedy-label {
+  font-weight: 700;
+  color: #333355;
+  font-size: .72rem;
+  min-width: 26px;
+  flex-shrink: 0;
+}
 
 /* 오행 상생·상극 다이어그램 */
 .cycle-svg {
