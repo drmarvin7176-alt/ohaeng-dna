@@ -787,11 +787,11 @@ function renderCycle(arch, counts) {
           <div class="cycle-sum-val"><span class="cycle-chip" style="background:${OH_COLOR[rel.생to]}">${OH_SYM[rel.생to]}</span> ${OH_NAME[rel.생to]}</div>
         </div>
         <div class="cycle-sum-item">
-          <div class="cycle-sum-label" style="color:rgba(205,70,70,0.9)">내가 이기는 것</div>
+          <div class="cycle-sum-label" style="color:rgba(205,70,70,0.9)">내가 견제하는 기운</div>
           <div class="cycle-sum-val"><span class="cycle-chip" style="background:${OH_COLOR[rel.beats]}">${OH_SYM[rel.beats]}</span> ${OH_NAME[rel.beats]}</div>
         </div>
         <div class="cycle-sum-item">
-          <div class="cycle-sum-label" style="color:rgba(205,70,70,0.9)">나를 이기는 것</div>
+          <div class="cycle-sum-label" style="color:rgba(205,70,70,0.9)">나를 견제하는 기운</div>
           <div class="cycle-sum-val"><span class="cycle-chip" style="background:${OH_COLOR[rel.losesTo]}">${OH_SYM[rel.losesTo]}</span> ${OH_NAME[rel.losesTo]}</div>
         </div>
       </div>
@@ -878,8 +878,10 @@ function genBoostText(counts) {
     const b           = OH_BOOST[cKey];
     const eCol        = OH_COLOR[envKey];
     const envParticle = ['목','금'].includes(envKey) ? '이' : '가';
+    const envTopic    = ['목','금'].includes(envKey) ? '은' : '는';
     const cParticle   = ['목','금'].includes(cKey)   ? '이' : '가';
     const cCount      = counts[cKey] || 0;
+    const cycleNote   = `<div class="boost-env-cycle">${OH_NAME[envKey]}${envTopic} ${OH_NAME[cKey]}에 약합니다 — 상극(克) 원리로 ${OH_NAME[cKey]}의 기운이 이 환경을 다스립니다.</div>`;
     const needNote    = cCount === 0
       ? `<div class="boost-env-need">현재 사주에 <strong>${OH_NAME[cKey]}</strong>${cParticle} 없어 보충이 더 중요합니다.</div>`
       : cCount === 1
@@ -891,6 +893,7 @@ function genBoostText(counts) {
         <span class="boost-env-when">${OH_NAME[envKey]}${envParticle} 많은 곳일때</span>
       </div>
       <div class="boost-env-desc">${OH_BOOST[envKey].envDesc}</div>
+      ${cycleNote}
       ${needNote}
       <div class="boost-env-remedy-row"><span class="boost-env-remedy-label">색상</span>${b.col}</div>
       <div class="boost-env-remedy-row"><span class="boost-env-remedy-label">소품</span>${b.items.split(',').slice(0,2).join(', ')}</div>
