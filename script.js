@@ -787,11 +787,11 @@ function renderCycle(arch, counts) {
           <div class="cycle-sum-val"><span class="cycle-chip" style="background:${OH_COLOR[rel.생to]}">${OH_SYM[rel.생to]}</span> ${OH_NAME[rel.생to]}</div>
         </div>
         <div class="cycle-sum-item">
-          <div class="cycle-sum-label" style="color:rgba(205,70,70,0.9)">내가 견제하는 기운</div>
+          <div class="cycle-sum-label" style="color:rgba(205,70,70,0.9)">내가 다스리는 기운</div>
           <div class="cycle-sum-val"><span class="cycle-chip" style="background:${OH_COLOR[rel.beats]}">${OH_SYM[rel.beats]}</span> ${OH_NAME[rel.beats]}</div>
         </div>
         <div class="cycle-sum-item">
-          <div class="cycle-sum-label" style="color:rgba(205,70,70,0.9)">나를 견제하는 기운</div>
+          <div class="cycle-sum-label" style="color:rgba(205,70,70,0.9)">나를 억누르는 기운</div>
           <div class="cycle-sum-val"><span class="cycle-chip" style="background:${OH_COLOR[rel.losesTo]}">${OH_SYM[rel.losesTo]}</span> ${OH_NAME[rel.losesTo]}</div>
         </div>
       </div>
